@@ -1,0 +1,109 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f6f9;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Heading */
+h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Header */
+thead {
+    background-color: #007bff;
+    color: white;
+}
+
+th {
+    padding: 12px;
+    text-align: left;
+    text-transform: uppercase;
+    font-size: 14px;
+}
+
+/* Body */
+td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Zebra effect */
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Hover effect */
+tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Status */
+.active {
+    color: green;
+    font-weight: bold;
+}
+
+.inactive {
+    color: red;
+    font-weight: bold;
+}
+
+
+/* Form Styling */
+form {
+width: 400px;
+margin: 30px auto;
+padding: 20px;
+background-color: #fff;
+box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+border-radius: 8px;
+}
+
+/* Form inputs */
+form input,
+form select,
+form textarea {
+width: 100%;
+padding: 8px;
+margin-top: 6px;
+margin-bottom: 12px;
+border: 1px solid #ccc;
+border-radius: 5px;
+box-sizing: border-box;
+}
+
+/* Labels */
+form label {
+font-weight: bold;
+color: #333;
+}
+
+/* Button */
+form button {
+width: 100%;
+padding: 10px;
+background-color: #007bff;
+color: white;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+}
+
+/* Button hover */
+form button:hover {
+background-color: #0056b3;
+}

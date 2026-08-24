@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Details</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<h2>Employee Details</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Field</th>
+            <th>Information</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>ID</td>
+            <td>{{ emp.id }}</td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td>{{ emp.full_name }}</td>
+        </tr>
+        <tr>
+            <td>Salary</td>
+            <td>₹ {{ emp.salary }}</td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td>{{ emp.email }}</td>
+        </tr>
+        <tr>
+            <td>Designation</td>
+            <td>{{ emp.designation }}</td>
+        </tr>
+        <tr>
+            <td>Manager</td>
+            <td>{{ emp.manager }}</td>
+        </tr>
+        <tr>
+            <td>Department</td>
+            <td>{{ emp.department }}</td>
+        </tr>
+        <tr>
+            <td>Status</td>
+            <td>
+                {% if emp.is_active %}
+                    <span class="active">Active</span>
+                {% else %}
+                    <span class="inactive">Inactive</span>
+                {% endif %}
+            </td>
+        <tr>
+    <td>Image</td>
+    <td>
+        {% if emp.image %}
+            <img src="{{ emp.image.url }}" alt="{{ emp.full_name }}" 
+                 style="max-width: 100px; max-height: 100px;">
+        {% else %}
+            No Image
+        {% endif %}
+    </td>
+</tr>
+    </tbody>
+</table>
+
+<!-- Back Button -->
+<div style="text-align:center; margin-top:20px;">
+    <button onclick="window.location.href='/'" 
+        style="padding:10px 20px; background:#007bff; color:white; border:none; border-radius:5px; cursor:pointer;">
+        ⬅ Back to Home
+    </button>
+</div>
+
+</body>
+</html>
