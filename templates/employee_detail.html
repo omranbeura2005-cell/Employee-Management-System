@@ -6,13 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Employee Details</title>
 
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=6">
 </head>
 <body>
+<main class="detail-page">
 
 <h2>Employee Details</h2>
 
-<table>
+<table class="detail-table">
     <thead>
         <tr>
             <th>Field</th>
@@ -28,14 +29,10 @@
             <td>Name</td>
             <td>{{ emp.full_name }}</td>
         </tr>
-        <tr>
-            <td>Salary</td>
-            <td>₹ {{ emp.salary }}</td>
-        </tr>
-        <tr>
-            <td>Email</td>
-            <td>{{ emp.email }}</td>
-        </tr>
+        {% if can_view_sensitive %}
+            <tr><td>Salary</td><td>₹ {{ emp.salary }}</td></tr>
+            <tr><td>Email</td><td>{{ emp.email }}</td></tr>
+        {% endif %}
         <tr>
             <td>Designation</td>
             <td>{{ emp.designation }}</td>
@@ -72,6 +69,30 @@
 </table>
 
 <!-- Back Button -->
+{% if can_check_in %}
+<div style="text-align:center; margin-top:20px;">
+    <video id="camera" autoplay playsinline width="320" height="240"></video>
+    <button type="button" id="check-in">Check in with camera</button>
+    <p id="attendance-status"></p>
+</div>
+</main>
+<script>
+const video = document.getElementById('camera');
+const status = document.getElementById('attendance-status');
+navigator.mediaDevices.getUserMedia({video: true}).then(stream => video.srcObject = stream);
+document.getElementById('check-in').addEventListener('click', async () => {
+    const canvas = document.createElement('canvas');
+    canvas.width = video.videoWidth; canvas.height = video.videoHeight;
+    canvas.getContext('2d').drawImage(video, 0, 0);
+    const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg'));
+    const data = new FormData(); data.append('photo', blob, 'attendance.jpg');
+    const response = await fetch('{% url "attendance_check_in" emp.id %}', {
+        method: 'POST', headers: {'X-CSRFToken': '{{ csrf_token }}'}, body: data
+    });
+    status.textContent = (await response.json()).message || 'Unable to record attendance.';
+});
+</script>
+{% endif %}
 <div style="text-align:center; margin-top:20px;">
     <button onclick="window.location.href='/'" 
         style="padding:10px 20px; background:#007bff; color:white; border:none; border-radius:5px; cursor:pointer;">

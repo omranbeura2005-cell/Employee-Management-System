@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin console | Employee Hub</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=6">
+</head>
+<body>
+<main class="insights-page">
+    <nav class="topbar">
+        <a class="brand" href="{% url 'home' %}">Employee Hub <span>Admin console</span></a>
+        <a class="back-link" href="{% url 'home' %}">&#8592; Employee list</a>
+    </nav>
+    <header class="dashboard-heading">
+        <div><p class="eyebrow">Administrator tools</p><h1>Staff activity</h1></div>
+    </header>
+    <section class="insights-grid">
+        <div class="insight-card">
+            <p class="eyebrow">Attendance overview</p>
+            <h2>Employee check-ins</h2>
+            <form class="filter-bar" method="get">
+                <select name="status" aria-label="Filter by status">
+                    <option value="">All statuses</option>
+                    <option value="active" {% if selected_status == 'active' %}selected{% endif %}>Active</option>
+                    <option value="inactive" {% if selected_status == 'inactive' %}selected{% endif %}>Inactive</option>
+                </select>
+                <select name="employee" aria-label="Filter by employee">
+                    <option value="">All employees</option>
+                    {% for employee in all_employees %}<option value="{{ employee.id }}" {% if selected_employee == employee.id|stringformat:'s' %}selected{% endif %}>{{ employee.full_name }}</option>{% endfor %}
+                </select>
+                <button class="button button-primary" type="submit">Filter</button>
+                <a class="button button-secondary" href="{% url 'admin_insights' %}">Clear</a>
+            </form>
+            <div class="summary-list">
+                {% for employee in employees %}<div class="summary-row"><span><strong>{{ employee.full_name }}</strong><small>{{ employee.email }}</small></span><b>{{ employee.attendance_count }} check-in{{ employee.attendance_count|pluralize }}</b></div>{% empty %}<p class="empty-state">No employees match this filter.</p>{% endfor %}
+            </div>
+        </div>
+        <div class="insight-card chat-card">
+            <p class="eyebrow">Quick answers</p>
+            <h2>Ask the register</h2>
+            <p class="muted">Search attendance, staff status, salaries, and saved changes.</p>
+            <div class="chat-history">{% for message in chat_messages %}<div class="chat-message"><strong>You</strong><p>{{ message.question }}</p><strong>Assistant</strong><p>{{ message.answer }}</p><small>{{ message.created_at|date:'M j, Y g:i A' }}</small></div>{% empty %}<p class="empty-state">Ask your first question.</p>{% endfor %}</div>
+            <form class="chat-form" method="post" action="{% url 'admin_chat' %}">{% csrf_token %}<input type="text" name="question" placeholder="How many attendance check-ins?" required><button class="button button-primary" type="submit">Ask</button></form>
+        </div>
+    </section>
+    <section class="insight-card audit-card">
+        <div class="section-heading"><div><p class="eyebrow">Saved history</p><h2>Change log</h2></div><form class="filter-bar" method="get"><input type="hidden" name="status" value="{{ selected_status }}"><input type="hidden" name="employee" value="{{ selected_employee }}"><select name="action" aria-label="Filter by action"><option value="">All actions</option><option value="created" {% if selected_action == 'created' %}selected{% endif %}>Created</option><option value="updated" {% if selected_action == 'updated' %}selected{% endif %}>Updated</option><option value="deleted" {% if selected_action == 'deleted' %}selected{% endif %}>Deleted</option><option value="attendance" {% if selected_action == 'attendance' %}selected{% endif %}>Attendance</option></select><button class="button button-secondary" type="submit">Filter log</button></form></div>
+        <div class="audit-list">{% for log in logs %}<article class="audit-row"><div><strong>{{ log.get_action_display }}</strong><span>{% if log.employee %}{{ log.employee.full_name }}{% else %}Deleted employee{% endif %}</span></div><div><small>By {{ log.actor.username|default:'system' }} at {{ log.created_at|date:'M j, Y g:i A' }}</small>{% if log.action == 'updated' %}<details><summary>View before and after</summary><pre>Before: {{ log.before_data|pprint }}
+After: {{ log.after_data|pprint }}</pre></details>{% endif %}</div></article>{% empty %}<p class="empty-state">No changes have been recorded yet.</p>{% endfor %}</div>
+    </section>
+</main>
+</body>
+</html>

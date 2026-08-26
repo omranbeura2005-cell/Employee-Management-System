@@ -4,19 +4,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Employee</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>Add Employee | Employee Hub</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=6">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
-<body>
-    <h2 style="color: #333; text-align: center;">Add Employee</h2>
-    <form action = "{% url 'add_Employee' %}" method = "POST" enctype="multipart/form-data">
+<body class="app-shell">
+    <main class="form-page">
+    <a class="back-link" href="{% url 'home' %}">&#8592; Employee list</a>
+    <header class="page-heading">
+        <p class="eyebrow">People operations</p>
+        <h1>Add employee</h1>
+        <p>Create a profile and optional login access in one place.</p>
+    </header>
+    {% if employee_added %}
+        <div class="success-banner" role="status">Employee added successfully. You can add another employee below.</div>
+    {% endif %}
+    <form class="employee-form" action="{% url 'add_Employee' %}" method="POST" enctype="multipart/form-data">
 
         {% csrf_token %}
 
         {{ form.as_p }}
-        <button type = "submit" >Add</button>
+        <div class="form-actions">
+            <button class="button button-primary" type="submit">Save employee</button>
+            <a class="button button-secondary" href="{% url 'home' %}">Back to employee list</a>
+        </div>
     </form>
+    </main>
 </body>
 </html>
 

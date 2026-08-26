@@ -4,24 +4,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employee Table</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>Staff register | Employee Hub</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=6">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-    <div style="margin-top: 20px;">
-    <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
-    <p>Don't have an account? <a href="{% url 'register' %}">Register</a></p>
-</div>
-    <h2 style="color: #333; text-align: center;">Employee of OUR Company</h2>
-    <a href = "{% url 'add_Employee' %}" style = "float : right ; margin-right :50px;">Add Employee</a>
-    <table>
+    <main class="dashboard">
+    <nav class="topbar">
+        <a class="brand" href="{% url 'home' %}">Employee Hub <span>Staff register</span></a>
+        <span class="user-menu">Signed in as {{ request.user.username }} {% if can_manage %}| <a href="{% url 'admin_insights' %}">Admin insights</a>{% endif %} | <a href="{% url 'logout' %}">Log out</a></span>
+    </nav>
+    <header class="dashboard-heading">
+        <div><p class="eyebrow">People operations</p><h1>Staff register</h1></div>
+        {% if can_manage %}<a class="button button-primary" href="{% url 'add_Employee' %}">Add employee</a>{% endif %}
+    </header>
+    <div class="table-wrap">
+    <table class="employee-table">
         <thead>
             <tr>
                 <th>ID</th>
                 <th>Name</th>
-                <th>Salary</th>
-                <th>Email</th>
+                {% if can_manage %}<th>Salary</th><th>Email</th>{% endif %}
                 <th>Designation</th>
                 <th>Manager</th>
                 <th>Department</th>
@@ -35,29 +38,30 @@
             <tr>
                 <td>{{e.id}}</td>
                 <td>{{e.full_name}}</td>
-                <td>{{e.salary}}</td>
-                <td>{{e.email}}</td>
+                {% if can_manage %}<td>{{e.salary}}</td><td>{{e.email}}</td>{% endif %}
                 <td>{{e.designation}}</td>
                 <td>{{e.manager}}</td>
                 <td>{{e.department}}</td>
                 <td>
                     {% if e.is_active %}
-                        <span style="color: green;">Active</span>
+                        <span class="active">Active</span>
                     {% else %}
-                        <span style="color: red;">Inactive</span>
+                        <span class="inactive">Inactive</span>
                     {% endif %}
                 </td>
                 <td>
                     <div>
-                        <a href = " {% url 'employee_detail' e.id %} "><i class="fa fa-eye"></i></a>
-                        <a href = " {% url 'edit_Employee' e.id %} "><i class="fa fa-edit"></i></a>
-                        <a href = ""><i class="fa fa-trash"></i></a>
+                        <a href="{% url 'employee_detail' e.id %}" aria-label="View employee"><i class="fa fa-eye"></i></a>
+                        {% if can_manage %}<a href = "{% url 'edit_Employee' e.id %}"><i class="fa fa-edit"></i></a>
+                        <a href="{% url 'delete_employee' e.id %}" aria-label="Delete employee"><i class="fa fa-trash"></i></a>{% endif %}
                     </div>
                 </td>
             </tr> 
             {% endfor %}
         </tbody>
     </table>
+    </div>
+    </main>
 
 </body>
 </html>

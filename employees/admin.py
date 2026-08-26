@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Department , Employee
+from .models import AdminChatMessage, Attendance, AuditLog, Department , Employee
 
 class EmployeeAdmin(admin.ModelAdmin):
     list_display = ['full_name','email','designation','salary','is_active','department','joining_date']
@@ -13,4 +13,7 @@ class EmployeeAdmin(admin.ModelAdmin):
 # Register your models here.
 admin.site.register(Department)
 admin.site.register(Employee , EmployeeAdmin)
+admin.site.register(Attendance)
+admin.site.register(AuditLog)
+admin.site.register(AdminChatMessage)
 

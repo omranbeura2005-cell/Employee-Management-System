@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'employees',
-    'accounts',
+    'emp_images.accounts',
 
     
 ]
@@ -147,3 +147,5 @@ MEDIA_ROOT = BASE_DIR / "media"
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
 LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/login/'

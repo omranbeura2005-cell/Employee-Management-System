@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} | Employee Hub</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=6">
+</head>
+<body class="app-shell">
+    <main class="confirm-page">
+        <div class="warning-icon">!</div>
+        <p class="eyebrow">Administrator confirmation</p>
+        <h1>{{ title }}</h1>
+        <p class="confirm-message">{{ message }}</p>
+        {% if danger %}<p class="danger-note">This action cannot be undone.</p>{% endif %}
+        <div class="form-actions">
+            <a class="button button-secondary" href="{% url 'home' %}">Back to employee list</a>
+            {% if confirm_by_post %}
+                <form method="post" action="{{ confirm_url }}">
+                    {% csrf_token %}
+                    <button class="button {% if danger %}button-danger{% else %}button-primary{% endif %}" type="submit">{{ confirm_label }}</button>
+                </form>
+            {% else %}
+                <a class="button button-primary" href="{{ confirm_url }}">{{ confirm_label }}</a>
+            {% endif %}
+        </div>
+    </main>
+</body>
+</html>
